@@ -26,15 +26,12 @@ function errorHandler(e) {
 }
 
 function successHandler() {  
-	//navigator.notification.alert("Saved to DB");
 }
 
 function getCredentialsSuccess() {  
-	//navigator.notification.alert("Got credentials from DB!");
 }
 
 function dbReady() {
-	//navigator.notification.alert("Database is ready");
 }
 
 	
@@ -58,22 +55,18 @@ function querySuccess(tx, results) {
  
 	if (results.rows.length == 0) 
 	{
-		//navigator.notification.alert("PUSTE - Log in");
-		//	login();
 		return true;
 	}
-	else {
-		//navigator.notification.alert("NIE PUSTE");
-	var name = String(results.rows.item(0).name);
-	username = String(results.rows.item(0).username);
-	token = String(results.rows.item(0).token);
-
-	tokenLogin(name, username, token);
-	$.mobile.changePage("#menu", {transition:"slide"});
-	return true;	
+	else 
+	{
+		var name = String(results.rows.item(0).name);
+		username = String(results.rows.item(0).username);
+		token = String(results.rows.item(0).token);
+		tokenLogin(name, username, token);
+		$.mobile.changePage("#menu", {transition:"slide"});
+		return true;	
 	}
-	//return true;
-	//document.getElementById('Result').innerHTML += wyniki;
+
 }
 
 function login()
@@ -115,9 +108,7 @@ function login()
 			token = credentials[2];
 			var date = new Date();
 			tx.executeSql('INSERT INTO credentials(name, username, token, created_at) VALUES (?, ?, ?, ?)', [name, username, token, date.getTime()]);
-						//navigator.notification.alert("after saving credentials");
 			}, errorHandler, successHandler);
-				
             $.mobile.changePage("#menu", {transition:"slide"});
         }
     };  
@@ -146,19 +137,15 @@ function tokenLogin(name, username, token)
         else 
         {
 			var credentials = xhr.responseText.substring(1, xhr.responseText.length-1).split(" ");
-			
 			var responseUsername = credentials[1];
 			if (responseUsername == username)
 			{ 
-			navigator.notification.alert("You are logged in as "+credentials[0]+"!", null, "Welcome", "Continue");
-			return;
+				navigator.notification.alert("You are logged in as "+credentials[0]+"!", null, "Welcome", "Continue");
+				return;
 			}
-			
-		return;
+			return;
         }
     };  
-	//navigator.notification.alert("Przed wysłaniem");
-    //xhr.send();
 	return;
 }
 
@@ -226,9 +213,8 @@ function register()
 			var token = credentials[2];
 			var date = new Date();
 			tx.executeSql('INSERT INTO credentials(name, username, token, created_at) VALUES (?, ?, ?, ?)', [name, username, token, date.getTime()]);
-						//navigator.notification.alert("after saving credentials");
 			}, errorHandler, successHandler);
-				
+			
             $.mobile.changePage("#menu", {transition:"slide"});
         }
     };  
@@ -236,9 +222,15 @@ function register()
 	$.mobile.changePage("#menu", {transition:"slide"});
 }
 
+
 function goto_menu()
 {
 	$.mobile.changePage("#menu", {transition:"slide"});
+}
+
+function goto_login()
+{
+	$.mobile.changePage("#login", {transition:"slide"});
 }
 
 function goto_register()
@@ -284,9 +276,7 @@ function closeLocation()
 
 function getMyPosition() 
 {
-	//navigator.notification.alert("pozycja");
     navigator.geolocation.getCurrentPosition(positionSuccess, errorHandler);
-	
 }
 
 function positionSuccess(position)
@@ -297,7 +287,6 @@ function positionSuccess(position)
 
 function saveLocation()
 {
-	
 	
 	var loc_name = document.getElementById("loc_name").value;
 	var loc_desc = document.getElementById("loc_desc").value;
@@ -329,9 +318,6 @@ function saveLocation()
         navigator.notification.alert("Please enter Adress", null, "Adress missing", "OK");
         return;
     }
-
-	
-
 
     var xhr = new XMLHttpRequest();
     xhr.open("POST", "http://flocfloc.herokuapp.com/app_add_location", true);
@@ -370,10 +356,8 @@ function saveLocation()
 }
 
 
-
-
-function getImage() {
-            // Retrieve image file location from specified source
+function getImage() 
+{
             navigator.camera.getPicture(savePhoto, function(message) {
 			navigator.notification.alert('Picture upload canceled', null, "", "Continue");
 
@@ -388,7 +372,8 @@ function getImage() {
 
 
 
-function savePhoto(imageURI) {
+function savePhoto(imageURI) 
+{
 	
 	var image1 = document.getElementById('image1');
 	var image2 = document.getElementById('image2');
@@ -432,10 +417,10 @@ function savePhoto(imageURI) {
 function deletePhoto(id) 
 {
 	navigator.notification.confirm(
-        'Are you sure you want to delete this photo?',  // message
-        onConfirm,              // callback to invoke with index of button pressed
-        'Delete?',            // title
-         ['Yes','No']             // buttonLabels
+        'Are you sure you want to delete this photo?',  
+        onConfirm,              
+        'Delete?',            
+         ['Yes','No']             
     );
 	
 	function onConfirm() {
@@ -456,7 +441,8 @@ function deletePhoto(id)
   var lng_field = document.getElementById("loc_longitude");
 
 
-function initMap() {
+function initMap() 
+{
   var map = new google.maps.Map(document.getElementById('map'), {
     center: {lat: 50.0646, lng: 19.9449},
     zoom: 5
@@ -585,7 +571,6 @@ showMyPositionOnMap = function(position){
 function searchLocations()
 {
 	
-	
 	var search_tag = document.getElementById("search_tag").value;
 	var search_near = document.getElementById("search_near").value;
 	
@@ -606,13 +591,12 @@ function searchLocations()
     xhr.onload = function(){
         if(xhr.responseText[0] == "[")
         {
-            //navigator.notification.navigator.notification.alert("JSON", null, "Fail", "Try Again");
 			var locations = JSON.parse(xhr.responseText);
 						
 			for (i in locations)
 			{
 				var noimage = "img/noimage.jpg";
-				//navigator.notification.alert(locations[i].photo);
+				
 				if(locations[i].hasOwnProperty('photo'))
 				{	
 					$('#search_results').append('<div class="results_item">' + '<img src="' + locations[i].photo + '" onclick="showLocation(' + locations[i].id + ');" class="results_thumb"/>'  + locations[i].name.toString().slice(0, 15) + '...' + '</div>');	
@@ -643,6 +627,7 @@ function showLocation(id)
         return;
     }
 
+
     var xhr = new XMLHttpRequest();
     xhr.open("POST", "http://flocfloc.herokuapp.com/app_get_location", true);
 	xhr.setRequestHeader('Content-type','application/x-www-form-urlencoded');
@@ -651,19 +636,13 @@ function showLocation(id)
     xhr.onload = function(){
         if(xhr.responseText[0] == "{")
         {
-            //navigator.notification.navigator.notification.alert("JSON", null, "Fail", "Try Again");
+
 			var location = JSON.parse(xhr.responseText);
-			//navigator.notification.alert(location.name);
 			            document.getElementById('show_loc_name').innerHTML = location.name;
                         document.getElementById('show_loc_desc').innerHTML = location.desc;
                         document.getElementById('show_loc_geo').innerHTML = location.geo;
 						document.getElementById('getmethere').innerHTML = '<button class="btn btn-lg btn-default"> <a class="getmetherelink" href="geo:' + location.latitude+ ',' + location.longitude + '"> <i class="fa fa-map-signs"></i>  Get me there!</a></button>';
 						
-						
-						
-						//'<a class="btn btn-lg btn-info" href=geo:"' + location.latitude + ',' + location.longitude + '"> <i class="fa fa-map-signs"></i>  Get me there!</a>';
-						
-                        //document.getElementById('show_loc_tags').innerHTML = location.tags
 						if(location.hasOwnProperty('images'))
 						{
 							if(location.images.length == 0)
@@ -731,12 +710,10 @@ function getMyLocations()
     xhr.onload = function(){
         if(xhr.responseText[0] == "[")
         {
-            //navigator.notification.navigator.notification.alert("JSON", null, "Fail", "Try Again");
 			var locations = JSON.parse(xhr.responseText);
 			for (i in locations)
 			{
 				var noimage = "img/noimage.jpg";
-				//navigator.notification.alert(locations[i].photo);
 				if(locations[i].hasOwnProperty('photo'))
 				{	
 					$('#my_locations_results').append('<div class="results_item">' + '<img src="' + locations[i].photo + '" onclick="showLocation(' + locations[i].id + ');" class="results_thumb"/>'  + locations[i].name.toString().slice(0, 15) + '...' + '</div>');	
@@ -763,7 +740,7 @@ function getMyLocations()
 function profileSettings()
 {
 	
-	
+
 	$.mobile.changePage("#settings", {transition:"slide"});
     var xhr = new XMLHttpRequest();
     xhr.open("POST", "http://flocfloc.herokuapp.com/app_get_user", true);
@@ -773,9 +750,7 @@ function profileSettings()
     xhr.onload = function(){
         if(xhr.responseText[0] == "{")
         {
-            //navigator.notification.navigator.notification.alert("JSON", null, "Fail", "Try Again");
 			var user = JSON.parse(xhr.responseText);
-			//populateCountries("edit_country");
 			document.getElementById("edit_name").value = user.name;
 			document.getElementById("edit_email").value = user.email;
 			document.getElementById("edit_webpage").value = user.webpage;			
@@ -789,10 +764,7 @@ function profileSettings()
 				{
 					
 					s.selectedIndex = i;
-					//s.options[i].selected = "selected";
 					s.options[i].selected = true;
-					//s.focus();
-					
 					return;
 		        }
    			}
@@ -810,4 +782,88 @@ function profileSettings()
     xhr.send();
 	$.mobile.changePage("#menu", {transition:"slide"});
 
+}
+
+function updateProfile()
+{
+	var name = document.getElementById("edit_name").value;
+	var country = document.getElementById("edit_country").value;
+	var email = document.getElementById("edit_email").value;
+	var webpage = document.getElementById("edit_webpage").value;
+	var password = document.getElementById("edit_password").value;
+    var new_password = document.getElementById("new_password").value;
+    var new_password_confirmation = document.getElementById("new_password_confirmation").value;
+	
+
+    if(name == "")
+    {
+        navigator.notification.alert("Please enter username", null, "Username Missing", "OK");
+        return;
+    }
+	
+	if(country == "")
+    {
+        navigator.notification.alert("Please enter country", null, "Country Missing", "OK");
+        return;
+    }
+	
+	if(email == "")
+    {
+        navigator.notification.alert("Please enter email", null, "Email Missing", "OK");
+        return;
+    }
+
+	if(password == "")
+    {
+        navigator.notification.alert("Please enter password", null, "Password Missing", "OK");  
+        return;
+    }
+	
+    if(new_password != new_password_confirmation)
+    {
+        navigator.notification.alert("Password and Password confirmation must match!", null, "Password error", "OK");  
+        return;
+    }
+	
+
+
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", "http://flocfloc.herokuapp.com/app_update_user", true);
+	xhr.setRequestHeader('Content-type','application/x-www-form-urlencoded');
+	
+	if(new_password != "")
+	{
+		var postContent = "username="+encodeURIComponent(username)+"&token="+encodeURIComponent(token)+"&name="+encodeURIComponent(name)+"&country="+		encodeURIComponent(country)+"&email="+encodeURIComponent(email)+"&webpage="+encodeURIComponent(webpage)+"&password="+encodeURIComponent(password)+"&new_password="+encodeURIComponent(new_password)+"&new_password_confirmation="+encodeURIComponent(new_password_confirmation);
+	}
+	else
+	{
+		var postContent = "username="+encodeURIComponent(username)+"&token="+encodeURIComponent(token)+"&name="+encodeURIComponent(name)+"&country="+		encodeURIComponent(country)+"&email="+encodeURIComponent(email)+"&webpage="+encodeURIComponent(webpage)+"&password="+encodeURIComponent(password);
+	}
+    xhr.send(postContent); 
+    xhr.onload = function(){
+        if(xhr.responseText.substring(1, xhr.responseText.length-1).split(" ")[0] == "Error")
+        {
+            navigator.notification.alert(xhr.responseText, null, "Wrong Creds", "Try Again");
+			return;
+        }
+        else 
+        {
+			var credentials = xhr.responseText.substring(1, xhr.responseText.length-1).split(" ");
+			
+			navigator.notification.alert(credentials[0] + ", your profile was successfully updated!", null, "Success", "Continue");
+			
+			deleteDb;
+			db.transaction(function(tx) {
+			name = credentials[0];
+			username = credentials[1];
+			token = credentials[2];
+			date = new Date();
+			tx.executeSql('INSERT INTO credentials(name, username, token, created_at) VALUES (?, ?, ?, ?)', [name, username, token, date.getTime()]);
+			}, errorHandler, successHandler);
+				
+            $.mobile.changePage("#menu", {transition:"slide"});
+        }
+    };  
+    xhr.send();
+	$.mobile.changePage("#menu", {transition:"slide"});
 }
