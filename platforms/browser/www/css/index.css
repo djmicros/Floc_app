@@ -1,0 +1,166 @@
+/*
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
+ */
+ 
+.ui-page{background:transparent !important;} 
+.ui-body-c{background:transparent !important;} 
+.ui-page-active{background:transparent !important;}
+
+* {
+    -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
+}
+
+.results_thumb {
+	max-width: 100px;
+	margin-left: 0px;
+}
+
+.results_item {
+	width: 100%;
+	text-align: left;
+	padding-left: 0px;
+	margin-top: 10px;
+	background:rgba(0, 0, 10,0.7);
+}
+
+.images-preview {
+	opacity: 1 !important;
+}
+.img-show-prev {
+	width: 100%;
+	float: left;
+}
+
+.well-black {
+	color: black;
+}
+
+body {
+    -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
+    -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
+    -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
+    background: url(../img/bg.jpg) no-repeat center top;
+	background-repeat: no-repeat;
+    background-attachment: fixed;
+	background-position: left;
+	background-size:cover;
+    font-family:'HelveticaNeue-Light', 'HelveticaNeue', Helvetica, Arial, sans-serif;
+    font-size:12px;
+    height:100%;
+    margin:0px;
+    padding:0px;
+    text-transform:uppercase;
+    width:100%;
+}
+
+/* Portrait layout (default) */
+.app {
+	background:rgba(0, 0, 0,0.6);
+    position:absolute;
+     width:300px;
+     z-index:15;
+     top:22%;
+     left:50%;
+     margin:-100px 0 0 -150px;
+    text-align:center;
+	color: white;
+}
+
+.logo {
+	width: 75%;
+	opacity: 100%;
+	margin-top: 10px;
+}
+
+p.hero-text {
+	color: white;
+}
+
+/* Landscape layout (with min-width) */
+@media screen and (min-aspect-ratio: 1/1) and (min-width:400px) {
+    .app {
+	background:rgba(0, 0, 0,0.6);
+    position:absolute;
+     width:550px;
+     z-index:15;
+     top:38%;
+     left:28%;
+    text-align:center;
+	color: white;
+    }
+}
+
+h1 {
+    font-size:24px;
+    font-weight:normal;
+    margin:0px;
+    overflow:visible;
+    padding:0px;
+    text-align:center;
+	color: white;
+}
+
+.event {
+    border-radius:4px;
+    -webkit-border-radius:4px;
+    color:#FFFFFF;
+    font-size:12px;
+    margin:0px 30px;
+    padding:2px 0px;
+}
+
+.event.listening {
+    background-color:#333333;
+    display:block;
+}
+
+.event.received {
+    background-color:#4B946A;
+    display:none;
+}
+
+@keyframes fade {
+    from { opacity: 1.0; }
+    50% { opacity: 0.4; }
+    to { opacity: 1.0; }
+}
+ 
+@-webkit-keyframes fade {
+    from { opacity: 1.0; }
+    50% { opacity: 0.4; }
+    to { opacity: 1.0; }
+}
+ 
+.blink {
+    animation:fade 3000ms infinite;
+    -webkit-animation:fade 3000ms infinite;
+}
+
+.picPrev {
+	max-width: 50px; 
+	max-height: 50px; 
+	float: left;
+}
+
+.select-country {
+	font-size: 5px;
+	text-align:left;
+	font-size:12px;
+    text-transform: none;
+	font-weight:normal;
+}

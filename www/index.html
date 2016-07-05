@@ -9,12 +9,14 @@
         <link rel="stylesheet" type="text/css" href="css/jquery.mobile.css">
         <link rel="stylesheet" type="text/css" href="css/index.css" />
         <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
         <title>Floc</title>
     </head>
     <body>
     
         <script type="text/javascript" src="cordova.js"></script>
 		<script type="text/javascript" src="js/bootstrap.min.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAj1VhTA5l4MKf9AloiQ81JkHvjXMedSI4&signed_in=false&libraries=places" async defer></script>
 		<script type="text/javascript" src="js/geo.js"></script>
 		<script type="text/javascript" src="js/jquery.js"></script>
         <script type="text/javascript" src="js/jquery.mobile.js"></script>
@@ -23,32 +25,34 @@
             init();
         </script>
         
+
+
         
         <div data-role="page" id="login">
             <div class="app">
-                <img src="img/logo.png" class="logo"/>
+                <img src="img/logo.png" onclick="goto_menu();" class="logo"/>
                 <p class="hero-text">Store, share and find your amazing Film Locations!</p>
                 <div data-role="main" class="ui-content">
                         <input id="username" type="text" class="form-control" placeholder="Enter Username">
                         <br>
                         <input id="password" type="password" class="form-control" placeholder="Enter Password">
                         <br>
-                        <button class="btn btn-lg btn-info" onclick="login();">Login</button>
+                        <button class="btn btn-lg btn-info" onclick="login();"><i class="fa fa-sign-in"></i>  Login</button>
                         <br>
                         <br>
-                        <button class="btn btn-lg btn-alert" onclick="goto_register();">New User? Sign up!</button>
+                        <button class="btn btn-lg btn-alert" onclick="goto_register();"><i class="fa fa-user-plus"></i>  New User? Sign up!</button>
                 </div>
             </div>    
   		</div>
         
         <div data-role="page" id="register">
             <div class="app">
-                <img src="img/logo.png" class="logo"/>
+                <img src="img/logo.png" onclick="goto_menu();" class="logo"/>
                 <p class="hero-text">Sign up:</p>
                 <div data-role="main" class="ui-content">
                         <input id="name" type="text" class="form-control" placeholder="Enter your name">
                         <br>
-                        <select id="country" name ="country"></select>
+                        <select id="country" name ="country" class="select-country"></select>
 							<script language="javascript">
                             populateCountries("country");
                             </script>
@@ -61,8 +65,8 @@
                         <br>
                         <input id="password_confirmation" type="password" class="form-control" placeholder="Password confirmation">
                         <br>
-                        <button class="btn btn-lg btn-info" onclick="register();">Register</button>
-                        <br>
+                        <button class="btn btn-lg btn-info" onclick="register();"><i class="fa fa-user-plus"></i>  Register</button>
+                        <button onclick="goto_menu();"><i class="fa fa-times"></i>  Cancel</button>
                 </div>
             </div>
   		</div>
@@ -70,23 +74,20 @@
 
         <div data-role="page" id="menu">
         	<div class="app">
-                    <img src="img/logo.png" class="logo"/>
+                    <img src="img/logo.png" onclick="goto_menu();" class="logo"/>
                 <div data-role="main" class="ui-content">
-                        <button onclick="goto_addLocation();">Add new location</button>
+                        <button onclick="goto_addLocation();"><i class="fa fa-plus-circle"></i>
+  Add new location</button>
                         <br>
-						<button onclick="browseLocations();">Browse Locations</button>
+						<button onclick="goto_browseLocations();"><i class="fa fa-search"></i>  Browse Locations</button>
 						<br>
-						<button onclick="profileSettings();">Profile Settings</button>
+                        <button onclick="goto_myLocations();"><i class="fa fa-map"></i>
+  My Locations</button>
+						<br>
+						<button onclick="profileSettings();"><i class="fa fa-cogs"></i>
+  Profile Settings</button>
                         <br>
-                        <button onclick="logOut();">Log out</button>
-                        <div id="deviceready" class="blink">
-                            <p class="event listening">Connecting to Device</p>
-                            <p class="event received">Device is Ready</p>
-                        </div>
-                        <br>
-                        <a href="#pagetwo">Go to Page Two</a>
-                        <br>
-                        <button onclick="deleteDb();">Delete DB</button>
+                        <button onclick="logOut();"><i class="fa fa-sign-out"></i>Log out</button>
                         <br>
                         <br>
                 </div>
@@ -96,33 +97,113 @@
 
         <div data-role="page" id="add_location">
         	<div class="app">
-                    <img src="img/logo.png" class="logo"/>
+                    <img src="img/logo.png" onclick="goto_menu();" class="logo"/>
                 <div data-role="main" class="ui-content">
                         <input id="loc_name" type="text" class="form-control" placeholder="Location name">
-                        <br>
                         <input id="loc_desc" type="text" class="form-control" placeholder="Description">
-                        <br>
                         <input id="loc_geo" type="text" class="form-control" placeholder="Location Address">
-                        <button onclick="getMyPosition();">Get my current position</button>
-                        <br>
+                        <button onclick="getMyPosition();"><i class="fa fa-map-marker"></i>
+  Get my current position</button>
+                        <div id="map" style="width: 100%; height: 300px; color:black;"> </div>
                         <input id="loc_tags" type="text" class="form-control" placeholder="Tags">
-                        <br>
-                        <button onclick="getImage();">Upload a Photo</button>
+                        <button onclick="getImage();"><i class="fa fa-file-image-o"></i>  Upload a Photo</button>
                         <input type="hidden" id="image1">
                         <input type="hidden" id="image2">
                         <input type="hidden" id="image3">
-                        <img class="picPrev" id="image1_prev"/>
-                        <img class="picPrev" id="image2_prev"/>
-                        <img class="picPrev" id="image3_prev"/>
+                        <div class="picPreviews" id="picPreviews">
+                        	<div class="picPreviewsInfo" id="picPreviewsInfo"></div>
+                            <img class="picPrev" id="image1_prev" onclick = "deletePhoto(1);"/>
+                            <img class="picPrev" id="image2_prev" onclick = "deletePhoto(2);"/>
+                            <img class="picPrev" id="image3_prev" onclick = "deletePhoto(3);"/>
+                        </div>
                         <br>
-                        <input type="checkbox" id="loc_electricity" name="electricity">Electricity?<br>
-                        <input type="checkbox" id="loc_open" name="open">Open?<br>
-                        <input type="checkbox" id="loc_public" name="public">Public?<br>
-                        <button onclick="saveLocation();">Save location!</button>
-                        <br>
-                        <br>
+                        <input type="checkbox" id="loc_electricity" name="electricity"><i class="fa fa-bolt"></i>
+  Electricity?<br>
+                        <input type="checkbox" id="loc_open" name="open"><i class="fa fa-key"></i>
+  Open?<br>
+                        <input type="checkbox" id="loc_public" name="public"><i class="fa fa-unlock-alt"></i>
+  Public?<br> 
+                        <br>                       
+                        <input type="hidden" id="loc_latitude">
+                        <input type="hidden" id="loc_longitude">
+                        <button onclick="saveLocation();"><i class="fa fa-floppy-o"></i>  Save location</button>
+                        <button onclick="goto_menu();"><i class="fa fa-times"></i>  Cancel</button>
                 </div>
             </div>
         </div> 
+        
+        
+        <div data-role="page" id="browse_locations">
+        	<div class="app">
+                    <img src="img/logo.png" onclick="goto_menu();" class="logo"/>
+                <div data-role="main" class="ui-content">
+                        <input id="search_tag" type="text" class="form-control" placeholder="Search tag">
+                        <input id="search_near" type="text" class="form-control" placeholder="Search near">
+                        <button onclick="searchLocations();"><i class="fa fa-search"></i>  Search</button>
+                        <button onclick="goto_menu();"><i class="fa fa-reply"></i>  Back to menu</button>
+                        <strong>Results:</strong>
+                        <div id="search_results"></div>
+                </div>
+            </div>
+        </div>
+        
+        <div data-role="page" id="my_locations">
+        	<div class="app">
+                    <img src="img/logo.png" onclick="goto_menu();" class="logo"/>
+                <div data-role="main" class="ui-content">
+                        <strong>My locations:</strong>
+                        <div id="my_locations_results"></div>
+                        <button onclick="goto_menu();"><i class="fa fa-reply"></i>  Back to menu</button>
+                </div>
+            </div>
+        </div>
+        
+        
+        <div data-role="page" id="show_location">
+        	<div class="app">
+                    <img src="img/logo.png" onclick="goto_menu();" class="logo"/>
+                <div data-role="main" class="ui-content">
+                        Name: <p class="well well-sm well-black" id="show_loc_name"></p>
+                        Description: <p class="well well-sm well-black" id="show_loc_desc"></p>
+                        Address: <p class="well well-sm well-black" id="show_loc_geo"></p>
+                        <p id="show_loc_images"></p>
+                        <div class="images-preview" id="images-preview">
+                        </div>
+                        <div id="show_loc_map" style="width: 100%; height: 200px; color:black;"> </div>
+						<div id="getmethere">
+                        	
+                        </div>
+                        <button onclick="closeLocation();"><i class="fa fa-times"></i> Close location!</button>
+                </div>
+            </div>
+        </div>  
+        
+
+        
+       	<div data-role="page" id="settings">
+            <div class="app">
+                <img src="img/logo.png" onclick="goto_menu();" class="logo"/>
+                
+                <div data-role="main" class="ui-content">
+                		<p class="hero-text">Edit profile:</p>        
+                		<input id="edit_name" type="text" class="form-control" placeholder="Enter your name">
+                        <select id="edit_country" name="country" class="select-country"></select>
+                        <script language="javascript">
+                            populateCountries("edit_country");
+                            </script>
+						<input id="edit_email" type="text" class="form-control" placeholder="Enter your Email">
+                        <input id="edit_webpage" type="text" class="form-control" placeholder="Enter your webpage">
+                        <input id="edit_old_password" type="password" class="form-control" placeholder="Enter current Password">
+                        Change password:
+						<input id="edit_password" type="password" class="form-control" placeholder="Enter new Password">
+                        <input id="edit_password_confirmation" type="password" class="form-control" placeholder="Confirm new Password">
+                        <button class="btn btn-lg btn-info" onclick="update_profile();"><i class="fa fa-check-square"></i>  Update Information</button>
+                        <button onclick="goto_menu();"><i class="fa fa-times"></i>  Cancel</button>
+                </div>
+            </div>
+  		</div>
+        
+        
+        
 	</body>
 </html>
